@@ -116,7 +116,7 @@ function BlogPage() {
               boxShadow: 3,
               '&:hover': { boxShadow: 6 },
               minHeight: '500px',
-              maxWidth: '800px',
+              maxWidth: '850px',
               mx: 'auto'
             }}>
               {blog.mediaUrl && (
