@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: blog-backend
+    env: node
+    buildCommand: npm install --legacy-peer-deps && npm run build
+    startCommand: npm run start:prod
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_HOST
+        fromDatabase:
+          name: blog-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: blog-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: blog-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: blog-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: blog-db
+          property: database
+
+databases:
+  - name: blog-db
+    plan: free
+    ipAllowList: [] 
