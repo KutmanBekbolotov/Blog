@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
+import { TextField, Button, Typography, Container, Box, Grid, Link } from "@mui/material";
 
 function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [isSignup, setIsSignup] = useState(true); 
-  const navigate = useNavigate(); 
+  const [isSignup, setIsSignup] = useState(true);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = isSignup
-      ? "http://localhost:3000/users/register"  
-      : "http://localhost:3000/users/login";  
+      ? "http://localhost:3000/users/register"
+      : "http://localhost:3000/users/login";
 
     try {
       const response = await fetch(url, {
@@ -28,7 +29,7 @@ function AuthPage() {
       if (response.ok) {
         setMessage(isSignup ? "User registered successfully!" : "Login successful!");
         if (!isSignup) {
-          navigate("/home"); 
+          navigate("/home");
         }
       } else {
         setMessage(data.message || (isSignup ? "Registration failed" : "Login failed"));
@@ -40,37 +41,68 @@ function AuthPage() {
   };
 
   return (
-    <div>
-      <h2>{isSignup ? "Sign Up" : "Login"}</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          mt: 8,
+          padding: 3,
+          borderRadius: 1,
+          boxShadow: 3,
+          backgroundColor: "#fff",
+        }}
+      >
+        <Typography variant="h5">{isSignup ? "Sign Up" : "Login"}</Typography>
+        <form onSubmit={handleSubmit} style={{ width: "100%", marginTop: "20px" }}>
+          <TextField
+            label="Email"
+            variant="outlined"
+            fullWidth
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
+            margin="normal"
           />
-        </div>
-        <div>
-          <label>Password</label>
-          <input
+          <TextField
+            label="Password"
+            variant="outlined"
             type="password"
+            fullWidth
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
+            margin="normal"
           />
-        </div>
-        <button type="submit">{isSignup ? "Register" : "Login"}</button>
-      </form>
-      <p>
-        {isSignup ? "Already have an account?" : "Don't have an account?"}{" "}
-        <button onClick={() => setIsSignup(!isSignup)}>
-          {isSignup ? "Login" : "Sign Up"}
-        </button>
-      </p>
-      {message && <p>{message}</p>}
-    </div>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3 }}
+          >
+            {isSignup ? "Register" : "Login"}
+          </Button>
+        </form>
+        <Grid container justifyContent="center" sx={{ mt: 2 }}>
+          <Grid item>
+            <Link
+              href="#"
+              variant="body2"
+              onClick={() => setIsSignup(!isSignup)}
+            >
+              {isSignup ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+            </Link>
+          </Grid>
+        </Grid>
+        {message && (
+          <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+            {message}
+          </Typography>
+        )}
+      </Box>
+    </Container>
   );
 }
 
