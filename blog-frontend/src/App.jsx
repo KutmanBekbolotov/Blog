@@ -1,19 +1,33 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/authContext"; 
 import AuthPage from "./pages/AuthPage";
 import Home from "./pages/HomePage";
+import BlogPage from "./pages/Blog/BlogPage";
+import PrivateRoute from "./components/PrivateRoute";  // Импортируем компонент PrivateRoute
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          <Route path="/auth" element={<AuthPage />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<Navigate to="/auth" />} />
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/home" element={<Home />} />
+            {/* Защищенные маршруты */}
+            <Route
+              path="/blogs"
+              element={
+                <PrivateRoute>
+                  <BlogPage />
+                </PrivateRoute>
+              }
+            />
+            <Route path="/" element={<Navigate to="/auth" />} />
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 

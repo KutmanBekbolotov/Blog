@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Container, Box, Grid, Link } from "@mui/material";
+import { useAuth } from "../context/authContext";
 
 function AuthPage() {
   const [email, setEmail] = useState("");
@@ -8,6 +9,7 @@ function AuthPage() {
   const [message, setMessage] = useState("");
   const [isSignup, setIsSignup] = useState(true);
   const navigate = useNavigate();
+  const { login } = useAuth();  // Извлекаем метод login из контекста
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +31,7 @@ function AuthPage() {
       if (response.ok) {
         setMessage(isSignup ? "User registered successfully!" : "Login successful!");
         if (!isSignup) {
+          login();  // Вызовите login при успешном входе
           navigate("/home");
         }
       } else {
