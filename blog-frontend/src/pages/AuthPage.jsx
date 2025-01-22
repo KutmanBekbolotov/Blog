@@ -25,8 +25,8 @@ function AuthPage() {
         },
         body: JSON.stringify(
           isSignup 
-            ? { username: email, email, password }  // для регистрации
-            : { email, password }                   // для логина
+            ? { username: email, email, password } 
+            : { email, password }                  
         ),
       });
 
@@ -35,7 +35,7 @@ function AuthPage() {
       if (response.ok) {
         setMessage(isSignup ? "User registered successfully!" : "Login successful!");
         if (!isSignup) {
-          login();  // Вызовите login при успешном входе
+          login();  
           navigate("/home");
         }
       } else {

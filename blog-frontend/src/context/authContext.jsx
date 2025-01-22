@@ -4,17 +4,17 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Проверка состояния авторизации в localStorage при загрузке
+    
     return localStorage.getItem('isAuthenticated') === 'true';
   });
 
   const login = () => {
-    localStorage.setItem('isAuthenticated', 'true');  // Сохраняем состояние в localStorage
+    localStorage.setItem('isAuthenticated', 'true');  
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    localStorage.removeItem('isAuthenticated');  // Удаляем из localStorage
+    localStorage.removeItem('isAuthenticated');  
     setIsAuthenticated(false);
   };
 
