@@ -8,27 +8,33 @@ services:
       - key: NODE_ENV
         value: production
       - key: DB_HOST
-        fromDatabase:
+        fromService:
+          type: postgres
           name: blog-db
           property: host
       - key: DB_PORT
-        fromDatabase:
+        fromService:
+          type: postgres
           name: blog-db
           property: port
       - key: DB_USER
-        fromDatabase:
+        fromService:
+          type: postgres
           name: blog-db
           property: user
       - key: DB_PASSWORD
-        fromDatabase:
+        fromService:
+          type: postgres
           name: blog-db
           property: password
       - key: DB_NAME
-        fromDatabase:
+        fromService:
+          type: postgres
           name: blog-db
           property: database
 
 databases:
-  - name: blog-db
+  - type: postgres
+    name: blog-db
     plan: free
     ipAllowList: [] 
