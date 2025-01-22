@@ -4,7 +4,7 @@ import { AuthProvider } from "./context/authContext";
 import AuthPage from "./pages/AuthPage";
 import Home from "./pages/HomePage";
 import BlogPage from "./pages/Blog/BlogPage";
-import PrivateRoute from "./components/PrivateRoute";  // Импортируем компонент PrivateRoute
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -14,7 +14,6 @@ function App() {
           <Routes>
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/home" element={<Home />} />
-            {/* Защищенные маршруты */}
             <Route
               path="/blogs"
               element={

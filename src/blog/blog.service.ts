@@ -9,29 +9,37 @@ export class BlogService {
   constructor(
     @InjectRepository(Blog)
     private blogRepository: Repository<Blog>,
-    @InjectRepository(User)  // Внедряем репозиторий User
-    private userRepository: Repository<User>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>
   ) {}
 
   async getUserById(id: number): Promise<User> {
     return this.userRepository.findOne({ where: { id } });
   }
 
-  async createBlog(content: string, author: User, media?: string): Promise<Blog> {
-    const newBlog = this.blogRepository.create({
-      content,
-      author,
-      media,
-    });
-    return this.blogRepository.save(newBlog);
+  async createBlog(title: string, content: string, author: User, mediaUrl: string | null): Promise<Blog> {
+    const blog = new Blog();
+    blog.title = title;
+    blog.content = content;
+    blog.author = author;
+    blog.mediaUrl = mediaUrl;
+    return this.blogRepository.save(blog);
   }
 
   async getAllBlogs(): Promise<Blog[]> {
-    return this.blogRepository.find();
+    return this.blogRepository.find({
+      relations: ['author'],
+      order: {
+        date: 'DESC'
+      }
+    });
   }
 
   async getBlogById(id: number): Promise<Blog> {
-    return this.blogRepository.findOne({ where: { id } });
+    return this.blogRepository.findOne({ 
+      where: { id },
+      relations: ['author']
+    });
   }
 
   async updateBlog(id: number, content: string, media?: string): Promise<Blog> {
@@ -41,7 +49,7 @@ export class BlogService {
     }
 
     blog.content = content;
-    if (media) blog.media = media;
+    if (media) blog.mediaUrl = media;
     return this.blogRepository.save(blog);
   }
 

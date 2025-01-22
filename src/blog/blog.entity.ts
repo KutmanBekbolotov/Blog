@@ -1,21 +1,23 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import { User } from '../users/user.entity';
 
-@Entity('blogs')
+@Entity()
 export class Blog {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  date: Date;
+  @Column()
+  title: string;
 
   @Column('text')
   content: string;
 
-  @ManyToOne(() => User, user => user.blog)
-  @JoinColumn({ name: 'author_id' })
+  @Column({ nullable: true })
+  mediaUrl: string;
+
+  @ManyToOne(() => User, (user) => user.blog)
   author: User;
 
-  @Column({ nullable: true })
-  media: string;  // URL или путь к медиа файлу
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  date: Date;
 }

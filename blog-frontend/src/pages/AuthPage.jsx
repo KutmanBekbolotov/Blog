@@ -9,7 +9,7 @@ function AuthPage() {
   const [message, setMessage] = useState("");
   const [isSignup, setIsSignup] = useState(true);
   const navigate = useNavigate();
-  const { login } = useAuth();  // Извлекаем метод login из контекста
+  const { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +23,11 @@ function AuthPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(
+          isSignup 
+            ? { username: email, email, password }  // для регистрации
+            : { email, password }                   // для логина
+        ),
       });
 
       const data = await response.json();

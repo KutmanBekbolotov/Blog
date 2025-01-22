@@ -1,7 +1,6 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
-import { UnauthorizedException } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -9,26 +8,36 @@ export class UsersController {
 
   @Post('register')
   async register(
-    @Body('email') email: string,
+    @Body('username') username: string,
     @Body('password') password: string,
-  ): Promise<{ email: string; id: number }> {
-    const user = await this.usersService.register(email, password);
-    return { email: user.email, id: user.id };
+    @Body('email') email: string,
+  ) {
+    return this.usersService.register(username, password, email);
   }
 
   @Post('login')
   async login(
     @Body('email') email: string,
     @Body('password') password: string,
-  ): Promise<{ message: string }> {
-    const user = await this.usersService.findByEmail(email);
+  ) {
+    return this.usersService.login(email, password);
+  }
 
-    const isPasswordValid = await this.usersService.validatePassword(user, password);
-    if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid credentials');
+  @Post('check-password')
+  async checkPassword(
+    @Body('username') username: string,
+    @Body('password') password: string,
+  ) {
+    try {
+      const user = await this.usersService.findByEmail(username);
+      return { 
+        exists: true,
+        hasPassword: !!user.password,
+        passwordLength: user.password?.length,
+      };
+    } catch {
+      return { exists: false, message: 'User not found' };
     }
-
-    return { message: 'Login successful' };
   }
 
   @Get()
