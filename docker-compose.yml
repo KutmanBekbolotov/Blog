@@ -4,27 +4,27 @@ services:
   postgres:
     image: postgres:15-alpine
     environment:
-      POSTGRES_DB: blogdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_NAME: blogdb
-      NODE_ENV: production
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      NODE_ENV: ${NODE_ENV}
     ports:
-      - "3000:3000"
+      - "${BACKEND_PORT}:3000"
     depends_on:
       - postgres
     volumes:
@@ -35,11 +35,11 @@ services:
       context: ./blog-frontend
       dockerfile: Dockerfile
     ports:
-      - "5173:5173"
+      - "${FRONTEND_PORT}:5173"
     environment:
-      VITE_API_URL: http://localhost:3000
+      VITE_API_URL: ${VITE_API_URL}
     depends_on:
       - backend
 
 volumes:
-  postgres_data: 
+  postgres_data:
