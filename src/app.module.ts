@@ -21,7 +21,7 @@ import { UsersModule } from './users/users.module';
             port: parseInt(process.env.DB_PORT) || 5432,
             username: process.env.DB_USERNAME || 'postgres',
             password: process.env.DB_PASSWORD || 'postgres',
-            database: process.env.DB_NAME || 'blogdb',
+            database: process.env.DB_NAME || 'blog-db',
             entities: [__dirname + '/**/*.entity{.ts,.js}'],
             synchronize: process.env.NODE_ENV !== 'production',
             ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
