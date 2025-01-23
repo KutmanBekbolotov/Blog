@@ -17,7 +17,7 @@ services:
           type: postgres
           name: blog-db
           property: port
-      - key: DB_USER
+      - key: DB_USERNAME 
         fromService:
           type: postgres
           name: blog-db
@@ -32,9 +32,3 @@ services:
           type: postgres
           name: blog-db
           property: database
-
-databases:
-  - type: postgres
-    name: blog-db
-    plan: free
-    ipAllowList: [] 
