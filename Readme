@@ -1,0 +1,58 @@
+Документация
+
+    1. Описание проекта
+    	•	Авторизацию пользователей.
+	    •	Создание, редактирование и удаление блогов.
+	    •	Интеграцию с PostgreSQL для хранения данных.
+	    •	Возможность загрузки файлов через Multer.
+
+    2. Технологический стек
+        •	Frontend: React + Material-UI
+	    •	Backend: NestJS
+	    •	База данных: PostgreSQL
+	    •	Инфраструктура:
+	    •	Docker и Docker Compose
+	    •	Render (для деплоя)
+	    •	Библиотеки:
+	        •	typeorm для работы с базой данных.
+	        •	multer для загрузки медиафайлов.
+	        •	jsonwebtoken и passport для авторизации.
+
+    3. 
+        project/
+        ├── backend/
+        │   ├── src/
+        │   │   ├── app.module.ts
+        │   │   ├── auth/
+        │   │   ├── blogs/
+        │   │   ├── common/
+        │   │   └── database/
+        │   └── .env
+        ├── frontend/
+        │   ├── src/
+        │   │   ├── components/
+        │   │   ├── context/
+        │   │   └── pages/
+        │   └── .env
+        ├── docker-compose.yml
+        └── README.md   
+
+    4. Установка и запуск
+        Локально
+	    1.	Убедитесь, что у вас установлены:
+	        •	Node.js
+	        •	Docker
+	        •	PostgreSQL (если без Docker)
+        2.	Склонируйте репозиторий:
+            git clone <URL>
+            cd project
+        3.	Настройте переменные окружения:
+	        •	В папках backend и frontend создайте файл .env по примеру .env.example.
+        4.	Запустите проект через Docker:
+            docker-compose up --build
+
+    5. API-эндпоинты
+
+        Блоги
+	        •	GET /blogs — Получение всех блогов.
+	        •	POST /blogs — Создание блога.
