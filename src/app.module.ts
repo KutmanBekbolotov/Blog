@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { User } from './users/user.entity';
-import { Blog } from './blog/blog.entity';
 import { AuthModule } from './auth/auth.module';
 import { BlogModule } from './blog/blog.module';
 import { UsersModule } from './users/users.module';
@@ -14,22 +12,27 @@ import { UsersModule } from './users/users.module';
     }),
     TypeOrmModule.forRootAsync({
       useFactory: async () => {
-        try {
-          return {
-            type: 'postgres',
-            host: process.env.DB_HOST || 'localhost',
-            port: parseInt(process.env.DB_PORT) || 5432,
-            username: process.env.DB_USERNAME || 'postgres',
-            password: process.env.DB_PASSWORD || 'postgres',
-            database: process.env.DB_NAME || 'blog-db',
-            entities: [__dirname + '/**/*.entity{.ts,.js}'],
-            synchronize: process.env.NODE_ENV !== 'production',
-            ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-          };
-        } catch (error) {
-          console.error('Error while creating TypeORM config:', error);
-          throw error;
+        if (
+          !process.env.DB_HOST ||
+          !process.env.DB_PORT ||
+          !process.env.DB_USER ||
+          !process.env.DB_PASSWORD ||
+          !process.env.DB_NAME
+        ) {
+          throw new Error('One or more required database environment variables are missing!');
         }
+
+        return {
+          type: 'postgres',
+          host: process.env.DB_HOST,
+          port: parseInt(process.env.DB_PORT, 10),
+          username: process.env.DB_USER,
+          password: process.env.DB_PASSWORD,
+          database: process.env.DB_NAME,
+          entities: [__dirname + '/**/*.entity{.ts,.js}'], 
+          synchronize: process.env.NODE_ENV !== 'production',
+          ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+        };
       },
     }),
     AuthModule,
